@@ -1,0 +1,153 @@
+h1,h2,h3,p{font-family: 'Montserrat', sans-serif;}
+a,li{text-decoration: none;list-style-type: none; /* Убираем маркеры */}
+li p{font-size: 18px;font-weight: 500;}
+h1{font-size: 48px;}
+h2{font-size: 24px;}
+h3{font-size: 18px;}
+p{font-size: 12px;font-weight: 600;}
+
+html, body{overflow-x: hidden;  margin: 0;
+}
+
+.logo{max-width: 200px;min-width: 100px;}
+.more_button{
+    width: 280px;
+    font-size: 18px;
+    border: none;
+    background-color:#CAB390;
+    color: white;
+    padding: 8px;
+    height: 50px;
+    border-radius: 100px;
+    margin: 16px 0;
+    transition: color 0.5s ease;
+    transition: background-color 0.5s ease;
+
+}
+.messenger-icons i{
+    color: #211F20;
+    text-decoration: none;
+    font-size: 24px;
+    transition: color 0.5s ease;
+
+}
+.content{
+    width: 100vw;
+    min-height: 110vh;
+    -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+    background-image: url("back1.png");
+    background-color: #211F20;
+
+}
+.content_inner{
+    display: flex;
+    align-items: center;
+    height: 80vh;
+
+
+}
+.title{
+    font-size: 48px;
+    font-weight: 800;
+    color:#144183
+}
+
+.subtitle{
+    font-size: 24px;
+    font-weight: 600;
+    color: #CAB390;
+    margin: 16px 0;
+}
+.text{
+    font-size: 18px;
+    font-weight: 500;
+    max-width: 650px;
+}
+
+.messenger-icons i:hover{
+    color: #CAB390;
+}
+.more_button:hover{
+    background-color: white;
+    border: 2px solid #CAB390;
+    color: #CAB390;
+}
+.history{
+    text-align: center;
+    width: 100vw;
+    min-height: 40vh;
+    background-color: #211F20;
+    padding: 64px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.news{
+    text-align: center;
+    width: 100vw;
+    min-height: 100vh;
+    padding: 64px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.titleWhite{
+    color: white;
+    font-size: 48px;
+    font-weight: 700;
+}
+.titleGold{
+    color: #CAB390;
+    font-size: 48px;
+    font-weight: 700;
+}
+.history_cards{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+.history_card{
+    padding: 32px 0;
+    color: white;
+    width: 250px;
+}
+.history_card_icon{
+
+}
+.history_card_number h1{
+    font-weight: 800;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+}
+.donate{
+    text-align: center;
+    width: 100vw;
+   min-height: 80vh;
+    -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #211F20;
+    padding: 32px 0;
+}
+.donation-button{
+    background-color: #CAB390;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 16px;
+    transition:  0.5s ease;
+
+}
+.donation-button:hover{
+    background-color: white;
+    color: #CAB390;
+    padding: 8px 16px;
+    border: 1px solid #CAB390;
+    border-radius: 16px;
+}
