@@ -4,10 +4,15 @@ from django.utils.translation import gettext_lazy as _
 class Report(models.Model):
     title = models.CharField(max_length=200, verbose_name=_("Название"))
     file = models.FileField(upload_to='reports/%Y/%m/', verbose_name=_("PDF файл"))
-    month = models.PositiveIntegerField(verbose_name=_("Месяц"), choices=[(i, _(f"{i}")) for i in range(1, 13)])
+    month = models.PositiveIntegerField(
+        verbose_name=_("Месяц"),
+        choices=[(i, _(f"{i}")) for i in range(1, 13)],
+        null=True, blank=True
+    )
     year = models.PositiveIntegerField(verbose_name=_("Год"), default=date.today().year)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Дата загрузки"))
-
+    is_yearly = models.BooleanField(default=False, verbose_name=_("Годовой отчет"))
+    
     class Meta:
         verbose_name = _("Отчет")
         verbose_name_plural = _("Отчеты")
@@ -15,8 +20,9 @@ class Report(models.Model):
         ordering = ['-year', '-month']
 
     def __str__(self):
+        if self.is_yearly:
+            return f"{self.title} (Годовой отчет {self.year})"
         return f"{self.title} ({self.month}/{self.year})"
-
 
 
 

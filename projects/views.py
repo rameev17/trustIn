@@ -30,14 +30,20 @@ def get_all_active_projects(request):
 
         return JsonResponse(data, safe=False)
 
+from django.http import JsonResponse
+from django.core.paginator import Paginator
+from django.utils import timezone
+from .models import Project
+
 def project_list(request):
     if request.method == "GET":
         project_id = request.GET.get("id")
         status = request.GET.get("status")  
 
+        # If an ID is provided, return only that project
         if project_id:
             try:
-                project = Project.objects.get(id=project_id, is_active=True)
+                project = Project.objects.get(id=project_id)
                 project_data = {
                     "id": project.id,
                     "title": project.title,
@@ -52,17 +58,22 @@ def project_list(request):
             except Project.DoesNotExist:
                 return JsonResponse({"error": "Project not found"}, status=404)
 
+        # Continue only if no project_id is provided
         current_time = timezone.now()
         projects = Project.objects.all()
 
+        # Deactivate expired projects
         projects_to_deactivate = projects.filter(ending_at__lt=current_time)
         projects_to_deactivate.update(is_active=False)
 
-        if status == "active":
-            projects = projects.filter(is_active=True)
-        elif status == "inactive":
-            projects = projects.filter(is_active=False)
+        # Apply status filtering only when project_id is NOT provided
+        if not project_id:
+            if status == "active":
+                projects = projects.filter(is_active=True)
+            elif status == "inactive":
+                projects = projects.filter(is_active=False)
 
+        # Pagination
         page_number = request.GET.get("page", 1)
         page_size = request.GET.get("page_size", 10)
         paginator = Paginator(projects, page_size)

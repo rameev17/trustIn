@@ -14,7 +14,7 @@ def get_reports_grouped(request):
 
         for report in reports:
             year = report['year']
-            month = report['month']
+            month = report['month'] or "Yearly"
             grouped_reports[year][month].append({
                 "id": report['id'],
                 "title": report['title'],
@@ -22,7 +22,8 @@ def get_reports_grouped(request):
                 "created_at": report['created_at']
             })
 
-        return JsonResponse(grouped_reports, safe=False)
+        return JsonResponse({k: dict(v) for k, v in grouped_reports.items()}, safe=False)
+
 
 
 
