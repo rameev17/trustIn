@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from .models import SubscriptionPlan
+from rest_framework.decorators import api_view
 
 @api_view(['GET'])
 def get_subscription_plans(request):
