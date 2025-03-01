@@ -27,14 +27,26 @@ def get_reports_grouped(request):
 
 
 
+@api_view(['GET'])
 def get_active_calendars(request):
     active_calendars = Calendar.objects.filter(is_active=True)
-    data = list(active_calendars.values('id', 'title', 'image', 'is_active'))
-    return JsonResponse(data, safe=False)
 
+    data = [
+        {
+            "id": cal.id,
+            "title": cal.title,
+            "image": request.build_absolute_uri(cal.image.url) if cal.image and cal.image.url else None,
+            "is_active": cal.is_active
+        }
+        for cal in active_calendars
+    ]
 
+    return JsonResponse(data, safe=False, status=200)
+
+@api_view(['GET'])
 def get_year_calendars(request):
     current_year = datetime.now().year
+
     year_calendars = YearCalendar.objects.filter(is_active=True).order_by(
         models.Case(
             models.When(year=current_year, then=0),
@@ -44,13 +56,31 @@ def get_year_calendars(request):
         'year'
     )
 
-    data = list(year_calendars.values('id', 'year', 'image', 'is_active'))
-    return JsonResponse(data, safe=False)
-def get_sponsors(request):
-    if request.method == 'GET':
-        sponsors = Sponsor.objects.filter(is_active=True).values('id', 'image')
-        return JsonResponse(list(sponsors), safe=False)
+    data = [
+        {
+            "id": yc.id,
+            "year": yc.year,
+            "image": request.build_absolute_uri(yc.image.url) if yc.image and yc.image.url else None,
+            "is_active": yc.is_active
+        }
+        for yc in year_calendars
+    ]
 
+    return JsonResponse(data, safe=False, status=200)
+
+@api_view(['GET'])
+def get_sponsors(request):
+    sponsors = Sponsor.objects.filter(is_active=True)
+
+    data = [
+        {
+            "id": sponsor.id,
+            "image": request.build_absolute_uri(sponsor.image.url) if sponsor.image and sponsor.image.url else None
+        }
+        for sponsor in sponsors
+    ]
+
+    return JsonResponse(data, safe=False, status=200)
 @csrf_exempt
 def vacancy_list(request):
     if request.method == "GET":

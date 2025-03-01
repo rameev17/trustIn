@@ -7,8 +7,18 @@ from .serializer import OrderSerializer
 @api_view(['GET'])
 def get_shop_items(request):
     if request.method == 'GET':
-        items = Shop.objects.filter(is_active=True).values('id', 'title', 'price', 'image', 'is_active')
-        return Response(items, status=status.HTTP_200_OK)
+        items = Shop.objects.filter(is_active=True)
+        data = [
+            {
+                "id": item.id,
+                "title": item.title,
+                "price": item.price,
+                "image": request.build_absolute_uri(item.image.url) if item.image else None,
+                "is_active": item.is_active,
+            }
+            for item in items
+        ]
+        return Response(data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def create_order(request):
