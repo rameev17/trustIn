@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ym^)c8d6hy)o)@t%jh8nw%^^*11b1100w#wffc(&x#m_jdbafh'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost','192.168.1.116']
+ALLOWED_HOSTS = ['yessikalumni.kz']
 
 
 # Application definition
@@ -138,7 +138,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/staticfiles/'
-STATIC_ROOT = '/home/trustin/staticfiles'
+STATIC_ROOT = '/home/agalqa-back/staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
