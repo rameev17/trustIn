@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from .models import Report,Calendar,Sponsor,YearCalendar, Vacancy,News
+from .models import Report,Calendar,Sponsor,YearCalendar, Vacancy,News, Statistics
 from collections import defaultdict
 from datetime import datetime
 from django.db import models
@@ -209,3 +209,15 @@ def news_list(request):
         }
 
         return JsonResponse(response_data, safe=False)
+    
+def statistics_view(request):
+    if request.method == "GET":
+        stats = Statistics.objects.first()
+
+        data = {
+            "students_count": stats.students_count if stats else 0,
+            "donated_money": stats.donated_money if stats else 0,
+            "donors_count": stats.donors_count if stats else 0
+        }
+        
+        return JsonResponse(data, safe=False)

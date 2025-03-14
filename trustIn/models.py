@@ -108,3 +108,23 @@ class News(models.Model):
 
     def __str__(self):
         return self.title
+    
+class Statistics(models.Model):
+    students_count = models.PositiveIntegerField(
+        verbose_name="Количество студентов", default=0
+    )
+    donated_money = models.PositiveIntegerField(
+        verbose_name="Сумма пожертвований (₸)", default=0
+    )
+    donors_count = models.PositiveIntegerField(
+        verbose_name="Количество жертвователей", default=0
+    )
+
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
+
+    class Meta:
+        verbose_name = "Статистика"
+        verbose_name_plural = "Статистика"
+
+    def __str__(self):
+        return f"Студенты: {self.students_count}, Донатеры: {self.donors_count}, Пожертвования: {self.donated_money}₸"
