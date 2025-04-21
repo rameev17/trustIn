@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ym^)c8d6hy)o)@t%jh8nw%^^*11b1100w#wffc(&x#m_jdbafh'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['yessikalumni.kz']
+ALLOWED_HOSTS = ['yessikalumni.kz', 'localhost']
 
 
 # Application definition
@@ -132,7 +132,8 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
+TELEGRAM_BOT_TOKEN = '7534132080:AAGtdGF-0b6dTM1aNMqfh1LKK5VIFpDOxDA'
+TELEGRAM_CHAT_ID = '545354555'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
