@@ -133,7 +133,7 @@ USE_I18N = True
 
 USE_TZ = True
 TELEGRAM_BOT_TOKEN = '7534132080:AAGtdGF-0b6dTM1aNMqfh1LKK5VIFpDOxDA'
-TELEGRAM_CHAT_ID = '545354555'
+TELEGRAM_CHAT_ID = '306666210'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
