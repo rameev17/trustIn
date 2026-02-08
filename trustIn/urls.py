@@ -8,7 +8,7 @@ urlpatterns = [
     path('calendar-year/', views.get_year_calendars, name='get_year_calendars'),
     path("vacancies/", views.vacancy_list, name="vacancy_list"),
     path("news/", views.news_list, name="news_list"),
-     path('statistics/', views.statistics_view, name='statistics'),
-
-
+    path('statistics/', views.statistics_view, name='statistics'),
+    path('about/', views.about_view, name='about'),
+    path('team/', views.team_view, name='team'),
 ]

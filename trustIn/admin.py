@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Report, Calendar, Sponsor, YearCalendar, Vacancy, News, Statistics
+from .models import Report, Calendar, Sponsor, YearCalendar, Vacancy, News, Statistics, About, AboutParagraph, AboutGoal, Team, TeamMember, Founder
 
 @admin.register(Report)
 class ReportAdmin(admin.ModelAdmin):
@@ -48,3 +48,79 @@ class StatisticsAdmin(admin.ModelAdmin):
         return False
     
 admin.site.register(YearCalendar, YearCalendarAdmin)
+
+
+class AboutParagraphInline(admin.TabularInline):
+    model = AboutParagraph
+    extra = 1
+    ordering = ['order']
+
+
+class AboutGoalInline(admin.TabularInline):
+    model = AboutGoal
+    extra = 1
+    ordering = ['order']
+
+
+@admin.register(About)
+class AboutAdmin(admin.ModelAdmin):
+    list_display = ('title', 'locale', 'created_at', 'updated_at')
+    list_filter = ('locale', 'created_at')
+    search_fields = ('title', 'mission_title', 'goals_title')
+    inlines = [AboutParagraphInline, AboutGoalInline]
+    
+    fieldsets = (
+        ('Основная информация', {
+            'fields': ('locale', 'title')
+        }),
+        ('Миссия', {
+            'fields': ('mission_title', 'mission_text')
+        }),
+        ('Цели', {
+            'fields': ('goals_title',)
+        }),
+    )
+
+
+@admin.register(Team)
+class TeamAdmin(admin.ModelAdmin):
+    list_display = ('team_title', 'founders_title', 'locale', 'created_at', 'updated_at')
+    list_filter = ('locale', 'created_at')
+    search_fields = ('team_title', 'founders_title')
+    
+    fieldsets = (
+        ('Основная информация', {
+            'fields': ('locale', 'team_title', 'founders_title')
+        }),
+    )
+
+
+@admin.register(TeamMember)
+class TeamMemberAdmin(admin.ModelAdmin):
+    list_display = ('name', 'role', 'year', 'contact', 'locale', 'is_active', 'order')
+    list_filter = ('locale', 'is_active', 'created_at')
+    search_fields = ('name', 'role', 'contact')
+    ordering = ('order', 'name')
+    
+    fieldsets = (
+        ('Основная информация', {
+            'fields': ('locale', 'name', 'role', 'year', 'contact', 'image')
+        }),
+        ('Настройки отображения', {
+            'fields': ('order', 'is_active')
+        }),
+    )
+
+
+@admin.register(Founder)
+class FounderAdmin(admin.ModelAdmin):
+    list_display = ('name', 'locale', 'order', 'created_at')
+    list_filter = ('locale', 'created_at')
+    search_fields = ('name',)
+    ordering = ('order', 'name')
+    
+    fieldsets = (
+        ('Основная информация', {
+            'fields': ('locale', 'name', 'order')
+        }),
+    )

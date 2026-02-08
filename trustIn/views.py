@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from .models import Report,Calendar,Sponsor,YearCalendar, Vacancy,News, Statistics
+from .models import Report,Calendar,Sponsor,YearCalendar, Vacancy,News, Statistics, About, Team, TeamMember, Founder
 from collections import defaultdict
 from datetime import datetime
 from django.db import models
@@ -221,3 +221,115 @@ def statistics_view(request):
         }
         
         return JsonResponse(data, safe=False)
+
+
+@api_view(['GET'])
+def about_view(request):
+    """
+    API endpoint для получения данных страницы "О нас" с поддержкой мультиязычности.
+    
+    Query Parameters:
+        locale (string): Язык контента. Возможные значения: 'kz' (казахский, по умолчанию), 'ru' (русский)
+    """
+    if request.method == 'GET':
+        locale = request.query_params.get('locale', 'kz')
+        
+        # Валидация locale
+        if locale not in ['kz', 'ru']:
+            locale = 'kz'
+        
+        # Получаем данные для запрошенного языка (без fallback)
+        about = About.objects.filter(locale=locale).first()
+        
+        # Если данных нет, возвращаем структуру с пустыми данными
+        if not about:
+            # Значения по умолчанию в зависимости от запрошенного языка
+            if locale == 'kz':
+                data = {
+                    "title": "Бірлестік туралы",
+                    "paragraphs": [],
+                    "mission_title": "Біздің миссия",
+                    "mission_text": "",
+                    "goals_title": "Мақсатымыз:",
+                    "goals": []
+                }
+            else:
+                data = {
+                    "title": "О нас",
+                    "paragraphs": [],
+                    "mission_title": "Наша миссия",
+                    "mission_text": "",
+                    "goals_title": "Наши цели:",
+                    "goals": []
+                }
+            return Response(data, status=200)
+        
+        # Формируем ответ с данными из базы
+        data = {
+            "title": about.title,
+            "paragraphs": [p.text for p in about.paragraphs.all().order_by('order')],
+            "mission_title": about.mission_title,
+            "mission_text": about.mission_text,
+            "goals_title": about.goals_title,
+            "goals": [g.text for g in about.goals.all().order_by('order')]
+        }
+        
+        return Response(data, status=200)
+
+
+@api_view(['GET'])
+def team_view(request):
+    """
+    API endpoint для получения данных страницы "Команда" с поддержкой мультиязычности.
+    
+    Query Parameters:
+        locale (string): Язык контента. Возможные значения: 'kz' (казахский, по умолчанию), 'ru' (русский)
+    """
+    if request.method == 'GET':
+        locale = request.query_params.get('locale', 'kz')
+        
+        # Валидация locale
+        if locale not in ['kz', 'ru']:
+            locale = 'kz'
+        
+        # Получаем данные для запрошенного языка (без fallback)
+        team = Team.objects.filter(locale=locale).first()
+        
+        # Если нет данных Team, используем значения по умолчанию для запрошенного языка
+        if not team:
+            team_title = "Біздің команда" if locale == 'kz' else "Наша команда"
+            founders_title = "Бірлестіктің құрылтайшылары" if locale == 'kz' else "Основатели ассоциации"
+        else:
+            team_title = team.team_title
+            founders_title = team.founders_title
+        
+        # Получаем активных членов команды для запрошенного языка (без fallback)
+        team_members = TeamMember.objects.filter(locale=locale, is_active=True).order_by('order', 'name')
+        
+        # Получаем основателей для запрошенного языка (без fallback)
+        founders = Founder.objects.filter(locale=locale).order_by('order', 'name')
+        
+        # Формируем ответ
+        data = {
+            "team_title": team_title,
+            "team_members": [
+                {
+                    "id": member.id,
+                    "name": member.name,
+                    "role": member.role,
+                    "year": member.year,
+                    "contact": member.contact,
+                    "image": request.build_absolute_uri(member.image.url) if member.image and member.image.url else None
+                }
+                for member in team_members
+            ],
+            "founders_title": founders_title,
+            "founders": [
+                {
+                    "name": founder.name
+                }
+                for founder in founders
+            ]
+        }
+        
+        return Response(data, status=200)
