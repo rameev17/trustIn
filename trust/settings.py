@@ -138,7 +138,7 @@ TELEGRAM_CHAT_ID = '306666210'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = '/staticfiles/'
+STATIC_URL = '/django-static/'
 STATIC_ROOT = '/home/agalqa-back/staticfiles'
 
 # Default primary key field type
